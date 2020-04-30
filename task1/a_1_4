@@ -1,0 +1,28 @@
+Zunächst spielten für unsere Einordnung des Bildes markante Merkmale des Stiers, wie spitze Hörner, Schweif, längliche Gesichtsform - nach unten hin spitz zulaufend -, Körperform, und Anzahl der Beine eine Rolle. Weiterhin die gesamte Haltung des Körpers, die auf Aggression oder Angriff schließen lässt.
+
+Den Menschen erkennen wir auch sofort an typischen Merkmalen (Kopf, Körper, Arme, Schnitt der Kleidung).
+Da er eine gerade, gestreckte, selbstbewusste und exponierte Körperhaltung hat, leiten wir ab, 
+dass die Situation gewollt ist, und die Szenerie keine Fluchtsituation darstellt. 
+Die Merkmale des Toreros sind nicht so stark ausgeprägt. 
+Man kann den Torero nur als einen solchen erkennen, da der Stier einen Kontext gibt.
+Beides zusammen lässt erahnen, dass es sich um einen Stierkampf handelt.
+
+Ein CNN könnte hier anhand der Körper-Merkmale der beiden Figuren die einzelnen Figuren erkennen.
+Bei dem Mensch könnte es jedoch schwieriger werden, diesen als solchen zu erkennen, außer es wurde entsprechend trainiert.
+Für ein CNN ist der Torero zu abstrakt gezeichnet um als Mensch klassifiziert zu werden. 
+Arme und Beine und der Kopf sind beispielsweise nur angedeutet. 
+Es ist im Gegensatz zum Stier kaum ein eindeutiges Merkmal eines Menschen zu sehen.
+Der Stier würde von einem CNN wahrscheinlich gut erkannt werden
+- vorausgesetzt es wurde mit entsprechenden Bildern trainiert.
+
+Das Gesamtbild einordnen zu können, käme auf die Art des Netzwerkes und die Daten an,
+mit denen es trainiert wurde, und, ob es auf Szenen wie z.B. (nennen wir es:) "Sportarten"
+oder auf einzelne Objekte trainiert wurde.
+
+
+
+Systematisch, um einzelne Objekte zu erkennen, würde man zunächst alle Kanten im Bild segmentieren. 
+Weiterhin Anhand der Helligkeitswerte der Objekte (hier: Stier dunkel, Hintergrund hell) 
+die verschiedenen Teilbereiche des Bildes (z.B. Pixel) zu zusammengehörigen Objekten clustern (=segmentieren).
+
+Anschließend würde man die einzelnen Teilbilder mit bestimmten Templates abgleichen, die man von Objekten hat, und erkennen, um welches Objekt es sich handeln könnte.
