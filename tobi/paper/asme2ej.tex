@@ -16,67 +16,100 @@
 \usepackage[center]{caption}
 \usepackage[locale=DE]{siunitx}
 
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
 \begin{document}
 
 \maketitle    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-{\it Die Vermessung von metallischen Gegenständen ist durch spiegelnde Materialeigenschaften komplex. Die Implementierung der Vermessung ist in Python mit der OpenCV \cite{opencv_library} Bibliothek erfolgt. Die Umrechnung in mm erfolgte wurde durch ein Referenzobjekt ermöglicht, dessen genaue Maße bekannt waren.  Durch den Einsatz eines Hintergrundes mit hohem Kontrast sowie der Wahl von günstigen Belichtungsverhältnissen konnte die Robustheit des Verfahrens verbessert werden
+{\it Die maschinelle Vermessung von metallischen Gegenständen ist durch spiegelnde Materialeigenschaften komplex. Es wurde eine Softwarelösung für die die Vermessung in Python mit der \emph{OpenCV}-Bibliothek\cite{opencv_library} entworfen und implementiert. Die Umrechnung der Kantenlängen von Pixel in Millimeter wurde durch das Platzieren eines Referenzobjekt mit bekannten Maßen, ermöglicht.  Durch den Einsatz eines Hintergrundes mit hohem Kontrast sowie der Wahl von günstigen Belichtungsverhältnissen konnte die Robustheit des Verfahrens verbessert werden
 }
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Einleitung}
-Die genaue Vermessung von Werkstücken ist in der Qualitätssicherung von zentraler Rolle. Mit Hilfe von maschinellem Sehen kann dieser Schritt automatisiert werden. Die Vermessung von metallischen Objekten stellt sich auf Grund von spiegelnden optischen Eigenschaften komplex dar. In dem vorliegenden Paper wird die Implementierung eines Vermessungssystems mit Hilfe der \emph{OpenCV}-Bilbliothek beschrieben. Das in der vorliegenden Arbeit entworfene und implementierte Verfahren stützt sich auf den Grundideen aus \cite{PyImageSearch}. Hier wird ein Vorgehen zur Objektvermessung mit der  \emph{OpenCV}-Bilbliothek beschrieben. Abzugrenzen ist diese Arbeit von \cite{PyImageSearch} durch die minimierte Komplexität in den Vorverarbeitungsschritten, sowie die Funktionsweise für metallische, spiegelnde Objekte.
+Die genaue Vermessung von Werkstücken ist in der Qualitätssicherung von zentraler Rolle. Mit Hilfe von maschinellem Sehen kann dieser Schritt automatisiert werden. Doch die Vermessung von metallischen Objekten stellt sich auf Grund von spiegelnden optischen Eigenschaften fehleranfällig dar. In der vorliegenden Arbeit wird die Implementierung eines Vermessungssystems mit Hilfe der \emph{OpenCV}-Bilbliothek beschrieben. 
 
-\section{Konzeption}
-Die Aufgabe der Objektvermessung an metallischen Objekten wurde als die folgenden Unteraufgaben entworfen.
+Das in der vorliegenden Arbeit entworfene und implementierte Verfahren stützt sich auf den Grundideen aus \cite{PyImageSearch}. Hier wird ein Vorgehen zur Objektvermessung mit der  \emph{OpenCV}-Bilbliothek beschrieben. Abzugrenzen ist diese Arbeit von \cite{PyImageSearch} durch Änderungen in den Vorbereitungsschritten, wodurch das Verfahren auf metallische Objekte mit spiegelnden Eigenschaften ausgeweitet werden konnte. Des Weiteren konnte gezeigt werden, dass der Vorverarbeitungsschritt mit Hilfe des \emph{Canny Edge Detectors}\cite{Canny} nur bedingt Notwendig ist.
 
-\subsection{Bildaufnahme}
-Die Lichtverhältnisse, sowie der Bildhintergrund haben starke Auswirkungen auf die Bildqualität. Als Bildhintergrund wurde ein Mattschwarzes Papier gewählt. Dies hat den Vorteil, dass von dem Objekt geworfene Schatten nicht zu sehen sind. Außerdem besteht ein guter Kontrast zwischen dem mattschwarzen Bildhintergrund und den Metallischen Objekten. Außerdem wurde während der Aufnahme darauf geachtet, dass alle Bilder mit einem \ang{90} Winkel aufgenommen wurden um Verzerrungen zu vermeiden.
-
-\subsection{Vorverarbeitung}
-Um die Datenqualität zu erhöhen und den Algorithmus robust zu halten wurden Vorverarbeitungsschritte eingesetzt. Zum einen wurde durch einen Median-Filter die Körnung aus dem Bild entfernt. Des weiteren wurde das farbige Bild in ein Binärbild umgewandelt.
-
-\subsection{Kantenerkennung}
-Nachdem das Bild vorverarbeitet wurde, sollen nun die längsten Kanten der Werkstücke gefunden werden. 
-
-\subsection{Referenzobjekt}
- Die Länge alle der auf dem Bild befindlichen Werkstücke wird im Schritt der Kantenerkennung zunächst in Pixel erfasst. Um die Länge der Werkstücke von Pixel in Millimeter umwandeln zu können, wurde ein Referenzobjekt im Bild platziert, dessen Größe bekannt ist. Bei der Wahl des Werkstücks wurde bewusst eines gewählt, wobei alle Seiten gleich lang sind. Somit kann später abgeglichen werden, ob auch alle Seiten als gleich lang erkannt werden. Ist dem nicht so, kann ein minimaler Messfehler angegeben werden.
- 
- \subsection{Ausgabe}
- Das Ergebnis der Vermessung sollte zuletzt in Form von sog. Boundingboxen inklusive der Kantenlängen in Millimeter in das Originalbild eingeblendet werden.
-
-\section{Versuchsaufbau}
-
-\section{Implementierung}
-
-\section{Bildaufnahme}
-Alle Bilder wurden wie in Sektion X beschrieben mit Hilfe der Hauptkamera eines Google Pixel 2 Xl Smartphones mit einer Auflösung von 12.2MP aufgenommen. Es wurden X verschiedene Bilder mit insgesamt X verschiedenen Objekten fotografiert. Auf jedem der Bilder wurde das Referenzobjekt platziert. Es wurde darauf geachtet, dass das Referenzobjekt an unterschiedlichen Positionen im Bild liegt um die Robustheit zu prüfen. Genauso wurde bewusst darauf geachtet, dass die Objekte möglichst zufällig und nicht orthogonal zu den Bildrändern ausgerichtet sind.
-
-\section{Vorverarbeitung} 
-
-Um schnell und mit relativ wenig Aufwand einen Prototypen erstellen zu können wurde bei der Implementierung auf die OpenCV Bibliothek mit Python gesetzt. 
-
-Zunächst musste das Bild vorverarbeitet werden. Hierzu wurde das Bild zunächst von RGB zu Graustufe umgewandelt. Dieser Schritt wird von OpenCV empfohlen um das Bild anschließend in ein Binärbild umzuwandeln. ~\ref{fig:bin}.
+\section{Konzeption}\label{sec:2}
+Für eine genaue Vermessung sind die Aufnahmebedingungen beim erstellen des Bildmaterials entscheidend. Es soll deshalb ein dunkler Hintergrund verwendet werden, um mögliche Schatten der Objekte retuschieren zu können. Außerdem entsteht dadurch ein guter Kontrast zwischen dem dunklen Bildhintergrund und den metallischen Objekten. Es muss des weiteren darauf geachtet werden, dass alle Bilder mit einem \ang{90} Winkel aufgenommen wurden, um Verzerrungen zu vermeiden.
 
 \begin{figure}
-	\includegraphics[scale=0.2]{binarization}
-	\caption[center]{Umwandlung vom RGB- zum Binärbild}
-	\label{fig:bin}
+	\includegraphics[scale=0.07	]{output.png}
+	\caption[center]{Bild als Original (links), nach der Vorverarbeitung (Mitte), sowie nach der Vermessung (rechts). }
+	\label{fig:intro}
 \end{figure}
 
-Auf das Binärbild wurde anschließend ein Medianfilter angewandt um Rauschen aus dem Bild zu entfernen.
 
-Das binarisierte und durch den Medianfilter bereinigte Bild wurde mit der Funktion findContours() anschließend nach Konturen abgesucht.
+Das Bild soll im Anschluss an die Aufnahme mehrere Vorbereitungsschritte durchlaufen, bevor die eigentliche Objektvermessung stattfindet. Zunächst wird durch ein Schwellwertverfahren das Bild binarisiert. Dies ist Notwendig, um in einem späteren Verarbeitungsschritt die Konturen der Objekte mit Hilfe des in \cite{Suzuki1985TopologicalSA} präsentierten Algorithmus finden zu können. Das binarisierte Bild wird im Anschluss durch einen Weichzeichner um grobe Körnungen und Unreinheiten bereinigt. 
 
-Um die Konturen herauszufiltern, die die Werkstücke am besten beschreiben muss in der Konfiguration des Skripts die Anzahl der auf dem Bild zu sehenden Objekte \{n\} angegeben werden. 
-Somit können die \{n\} Flächenmäßig größten Konturen ausgewählt werden.
+Das vorverarbeitete Bild soll im Anschluss mit Hilfe von \cite{Suzuki1985TopologicalSA} nach Konturen durchsucht werden. Da uns nur die Gesamtlänge und Breite des Werkstücks interessiert wird jeweils ein Rechteck mit der kleinst möglichen Fläche um die Konturen gespannt. Anhand der Entfernung benachbarter Eckpunkte der Rechtecke kann anschließend die Länge und Breite des Werkstücks in Pixel ausgerechnet werden. Um die gemessene Länge der Werkstücke von Pixel in Millimeter umwandeln zu können, wird ein Referenzobjekt im Bild platziert, dessen Maße bekannt sind. Hierbei soll ein Gegenstand mit gleichen Längen- und Breitenmaßen gewählt werden. Dadurch kann später geprüft werden, ob  alle Seiten des Referenzobjektes als gleich lang erkannt werden. Abweichungen von Länge und Breite des Referenzobjektes können somit als minimaler Messfehler angegeben werden. Wie in Abbildung \ref{fig:intro} zu sehen ist, wurde eine Münze als Referenzobjekt gewählt.  Das Ergebnis der Vermessung sollte in Form von \emph{Boundingboxen} inklusive der Kantenlängen in Millimeter in das Originalbild eingeblendet werden (siehe Abbildung \ref{fig:intro}).
 
-\section{Ergebnisse / Experimente}
+\section{Realisierung}
 
-\section{Ausblick}
+Alle Bilder wurden wie in Sektion \ref{sec:2} beschrieben mit Hilfe der Hauptkamera eines Google \emph{Pixel 2 XL Smartphones} \footnote{https://www.cnet.com/products/google-pixel-2-xl/specs/} mit einer Auflösung von 12.2MP aufgenommen. Als Bildhintergrund wurde ein mattschwarzer Karton, wie auf Abbildung \ref{fig:intro} (links) zu sehen ist, verwendet. Hierdurch konnten Schatten der auf dem Bild befindlichen Objekte im Hintergrund untergehen. Die Auswirkung des Schattenwurfs bei einem hellen Bildhintergrund ist exemplarisch auf Abbildung \ref{fig:shade} dargestellt. Um eine Verzerrung der Messergebnisse durch den Schattenwurf in diesem Fall zu vermeiden, müssten komplexe Vorverarbeitungsschritte eingesetzt werden. Es wurden 3 verschiedene Bilder mit insgesamt 3 verschiedenen zu vermessenden Objekten fotografiert. Auf jedem Bild wurde das Referenzobjekt platziert. Es wurde bewusst darauf geachtet, dass sich die Ausrichtung der Objekte in den Bildern unterscheidet um einer Überanpassung des Messalgorithmus entgegen zu wirken.
+
+\begin{figure}
+	\includegraphics[scale=0.25]{bad_shade_white_background.png}
+	\caption[center]{Die Auswirkungen des Schattens bei hellem Bildhintergrund}
+	\label{fig:shade}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[scale=0.2]{blurr}
+	\caption[center]{Das Binärbild vor (links) und nach (rechts) der Anwendung des Medianfilters}
+	\label{fig:blurr}
+\end{figure}
+
+Das entworfene Konzept zur Vorverarbeitung und Vermessung des Eingabebildes wurde mit Hilfe der \emph{OpenCV}-Bibliothek in Python umgesetzt. Im folgenden Codeausschnitt sind die implementierten Vorverarbeitungsschritte aufgeführt.
+
+\begin{lstlisting}[language=Python, caption=Vorverarbeitung]
+import cv2
+
+raw_img = cv2.imread("image.jpg")
+grey = cv2.cvtColor(raw_img, cv2.COLOR_BGR2GRAY)
+_ , thresh = cv2.threshold(grey, 127, 255, 0)
+median_blurred = cv2.medianBlur(thresh, 11)
+
+\end{lstlisting}
+In Zeile 4 wird das Bild zunächst vom RGB-Format in ein Graustufenbild umgewandelt. Dieser Schritt wird von  \emph{OpenCV} empfohlen um das Bild anschließend in ein Binärbild umzuwandeln. Die Überführung in das Binärformat passiert mit dem Aufruf aus Zeile 5. Der Schwellwert-Parameter für das Verfahren wurde empirisch auf 127 festgelegt. Als finaler Vorbereitungsschritt wird in Zeile 6 noch mit Hilfe des Medianfilters das Bild von Ausreißerpixel befreit (siehe Abbildung \ref{fig:blurr}). Auch die Filtergröße des Medianfilters wurde empirisch auf 11 festgelegt.
+
+Das Bild wird im Anschluss der Vorverarbeitung mit der \emph{OpenCV}-Funktion \emph{findContours()} nach Konturen abgesucht. Wie bereits oben angedeutet, implementiert die Funktion den Algorithmus aus \cite{Suzuki1985TopologicalSA}. Es werden nur die Flächenmäßig größten \(n\) gefunden Konturen weiter Verarbeitet. \(n\) entspricht hierbei der im  Bild enthaltenen Elemente und muss vor der Skriptausführung als Parameter festgelegt werden. Im nächsten Schritt werden mit Hilfe der \emph{minAreaRect()}-Funktion \(n\) Rechtecke mit minimaler Fläche kalkuliert, die die größten \(n\) Konturen umfassen. Dadurch kann im nachfolgenden Schritt die euklidische Distanz zwischen den Eckpunkten der minimalen Rechtecke kalkuliert werden. Zwei benachbarte gefundene Kanten entsprechen jeweils der Höhe und Länge eines Werkstücks in Pixeln. Die Umrechnung der Kantenlängen von Pixel in mm erfolgt wie oben beschrieben durch das Referenzobjekt.
+
+\section{Ergebnisse}
+Um die Funktionsweise des beschrieben Verfahrens zu Testen wurden verschiedene Tests durchgeführt. Zum einen wurde geprüft, ob die gleichen Gegenstände auf verschiedenen Bildern gleich groß vermessen wurden. Das Messer wurde in 3 verschiedenen Bildern im Mittel mit 24.5 und einer Standardabweichugn von X vermessen. Längen (208,2 ; 205,8 ; 199,6 )
+Außerdem wurde mit verschiedenen Referenzobjekten getetstet. blabla...
+
+\section{Limitationen}
+Die Kantenlängen der flächenmäßig minimalen Rechtecke, die die Konturen der zu vermessenden Objekte umranden entspricht nicht immer der Länge und Breite des zu vermessenden Werkstücks. Das in der Arbeit beschriebenen Schritte sind stark von den Aufnahmebedingungen des Bildes abhängig.
 
 \bibliographystyle{asmems4}
 
